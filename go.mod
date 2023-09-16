@@ -5,14 +5,13 @@ go 1.18
 require (
 	cloud.google.com/go/storage v1.33.0
 	github.com/GoogleCloudPlatform/functions-framework-go v1.7.4
-	golang.org/x/image v0.12.0
+	gopkg.in/gographics/imagick.v2 v2.6.3
 )
 
 require (
 	cloud.google.com/go v0.110.4 // indirect
 	cloud.google.com/go/compute v1.20.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
-	cloud.google.com/go/functions v1.15.1 // indirect
 	cloud.google.com/go/iam v1.1.0 // indirect
 	github.com/cloudevents/sdk-go/v2 v2.14.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect

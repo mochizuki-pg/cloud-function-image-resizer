@@ -1,48 +1,47 @@
-package resizeimage
+package imageresizer
 
 import (
 	"context"
 	"fmt"
-	"image"
-	"image/gif"
-	"image/jpeg"
-	"image/png"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
 
+	"gopkg.in/gographics/imagick.v2/imagick"
+
 	"cloud.google.com/go/storage"
 	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
-	"golang.org/x/image/draw"
 )
 
 func init() {
+	imagick.Initialize()
 	functions.HTTP("ResizeImage", ResizeImage)
 }
 
 func ResizeImage(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 
-	image, format, err := fetchImageFromStorage(ctx, r)
+	originalImageBlob, format, err := fetchImageFromStorage(ctx, r)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Fetch error: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	resizedImage, err := resizeImage(image, r)
+	resizedImageBlob, err := resizeImage(originalImageBlob, r)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Resize error: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	err = writeToResponse(w, resizedImage, format)
+	err = writeToResponse(w, resizedImageBlob, format)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Write error: %v", err), http.StatusInternalServerError)
 		return
 	}
 }
 
-func fetchImageFromStorage(ctx context.Context, r *http.Request) (image.Image, string, error) {
+func fetchImageFromStorage(ctx context.Context, r *http.Request) ([]byte, string, error) {
 	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return nil, "", err
@@ -62,29 +61,38 @@ func fetchImageFromStorage(ctx context.Context, r *http.Request) (image.Image, s
 	}
 	defer reader.Close()
 
-	originalImage, format, err := image.Decode(reader)
+	buf, err := ioutil.ReadAll(reader)
 	if err != nil {
 		return nil, "", err
 	}
-	return originalImage, format, nil
+
+	return buf, reader.ContentType(), nil
 }
 
-func resizeImage(originalImage image.Image, r *http.Request) (image.Image, error) {
+func resizeImage(originalImageBlob []byte, r *http.Request) ([]byte, error) {
+	mw := imagick.NewMagickWand()
+	defer mw.Destroy()
+
+	err := mw.ReadImageBlob(originalImageBlob)
+	if err != nil {
+		return nil, err
+	}
+
+	originalWidth := mw.GetImageWidth()
+	originalHeight := mw.GetImageHeight()
+
 	widthParam := r.URL.Query().Get("w")
 	heightParam := r.URL.Query().Get("h")
 
-	if widthParam == "" && heightParam == "" {
-		return originalImage, nil
-	}
-
-	var width, height int
+	width := uint(0)
+	height := uint(0)
 
 	if widthParam != "" {
 		intWidth, err := strconv.Atoi(widthParam)
 		if err != nil || intWidth <= 0 {
 			return nil, fmt.Errorf("Invalid width parameter")
 		}
-		width = intWidth
+		width = uint(intWidth)
 	}
 
 	if heightParam != "" {
@@ -92,42 +100,28 @@ func resizeImage(originalImage image.Image, r *http.Request) (image.Image, error
 		if err != nil || intHeight <= 0 {
 			return nil, fmt.Errorf("Invalid height parameter")
 		}
-		height = intHeight
+		height = uint(intHeight)
 	}
 
-	if width == 0 && height == 0 {
-		return nil, fmt.Errorf("Either width or height must be specified")
+	if width == 0 && height != 0 {
+		aspectRatio := float64(originalWidth) / float64(originalHeight)
+		width = uint(float64(height) * aspectRatio)
 	}
 
-	srcBounds := originalImage.Bounds()
-	srcW, srcH := srcBounds.Max.X, srcBounds.Max.Y
-
-	if width == 0 {
-		width = int(float64(srcW) / float64(srcH) * float64(height))
-	} else if height == 0 {
-		height = int(float64(srcH) / float64(srcW) * float64(width))
+	if height == 0 && width != 0 {
+		aspectRatio := float64(originalHeight) / float64(originalWidth)
+		height = uint(float64(width) * aspectRatio)
 	}
 
-	dst := image.NewRGBA(image.Rect(0, 0, width, height))
-	draw.ApproxBiLinear.Scale(dst, dst.Bounds(), originalImage, srcBounds, draw.Over, nil)
+	if err := mw.ResizeImage(width, height, imagick.FILTER_LANCZOS, 1.0); err != nil {
+		return nil, err
+	}
 
-	return dst, nil
+	return mw.GetImageBlob(), nil
 }
 
-func encodeImage(w http.ResponseWriter, img image.Image, format string) error {
-	switch format {
-	case "png":
-		return png.Encode(w, img)
-	case "jpeg":
-		return jpeg.Encode(w, img, nil)
-	case "gif":
-		return gif.Encode(w, img, nil)
-	default:
-		return fmt.Errorf("Unsupported image format: %s", format)
-	}
-}
-
-func writeToResponse(w http.ResponseWriter, resizedImage image.Image, originalFormat string) error {
-	w.Header().Set("Content-Type", "image/"+originalFormat)
-	return encodeImage(w, resizedImage, originalFormat)
+func writeToResponse(w http.ResponseWriter, resizedImageBlob []byte, originalFormat string) error {
+	w.Header().Set("Content-Type", originalFormat)
+	_, err := w.Write(resizedImageBlob)
+	return err
 }

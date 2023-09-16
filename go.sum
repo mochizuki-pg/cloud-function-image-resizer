@@ -275,8 +275,6 @@ cloud.google.com/go/functions v1.9.0/go.mod h1:Y+Dz8yGguzO3PpIjhLTbnqV1CWmgQ5Uwt
 cloud.google.com/go/functions v1.10.0/go.mod h1:0D3hEOe3DbEvCXtYOZHQZmD+SzYsi1YbI7dGvHfldXw=
 cloud.google.com/go/functions v1.12.0/go.mod h1:AXWGrF3e2C/5ehvwYo/GH6O5s09tOPksiKhz+hH8WkA=
 cloud.google.com/go/functions v1.13.0/go.mod h1:EU4O007sQm6Ef/PwRsI8N2umygGqPBS/IZQKBQBcJ3c=
-cloud.google.com/go/functions v1.15.1 h1:LtAyqvO1TFmNLcROzHZhV0agEJfBi+zfMZsF4RT/a7U=
-cloud.google.com/go/functions v1.15.1/go.mod h1:P5yNWUTkyU+LvW/S9O6V+V423VZooALQlqoXdoPz5AE=
 cloud.google.com/go/gaming v1.5.0/go.mod h1:ol7rGcxP/qHTRQE/RO4bxkXq+Fix0j6D4LFPzYTIrDM=
 cloud.google.com/go/gaming v1.6.0/go.mod h1:YMU1GEvA39Qt3zWGyAVA9bpYz/yAhTvaQ1t2sK4KPUA=
 cloud.google.com/go/gaming v1.7.0/go.mod h1:LrB8U7MHdGgFG851iHAfqUdLcKBdQ55hzXy9xBJz0+w=
@@ -922,8 +920,6 @@ golang.org/x/image v0.0.0-20210607152325-775e3b0c77b9/go.mod h1:023OzeP/+EPmXeap
 golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d/go.mod h1:023OzeP/+EPmXeapQh35lcL3II3LrY8Ic+EFFKVhULM=
 golang.org/x/image v0.0.0-20211028202545-6944b10bf410/go.mod h1:023OzeP/+EPmXeapQh35lcL3II3LrY8Ic+EFFKVhULM=
 golang.org/x/image v0.0.0-20220302094943-723b81ca9867/go.mod h1:023OzeP/+EPmXeapQh35lcL3II3LrY8Ic+EFFKVhULM=
-golang.org/x/image v0.12.0 h1:w13vZbU4o5rKOFFR8y7M+c4A5jXDC0uXTdHYRP8X2DQ=
-golang.org/x/image v0.12.0/go.mod h1:Lu90jvHG7GfemOIcldsh9A2hS01ocl6oNO7ype5mEnk=
 golang.org/x/lint v0.0.0-20181026193005-c67002cb31c3/go.mod h1:UVdnD1Gm6xHRNCYTkRU2/jEulfH38KcIWyp/GAMgvoE=
 golang.org/x/lint v0.0.0-20190227174305-5b3e6a55c961/go.mod h1:wehouNa3lNwaWXcvxsM5YxQ5yQlVC4a0KAMCusXpPoU=
 golang.org/x/lint v0.0.0-20190301231843-5614ed5bae6f/go.mod h1:UVdnD1Gm6xHRNCYTkRU2/jEulfH38KcIWyp/GAMgvoE=
@@ -1510,6 +1506,8 @@ gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8
 gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c/go.mod h1:JHkPIbrfpd72SG/EVd6muEfDQjcINNoR0C8j2r3qZ4Q=
 gopkg.in/errgo.v2 v2.1.0/go.mod h1:hNsd1EY+bozCKY1Ytp96fpM3vjJbqLJn88ws8XvfDNI=
+gopkg.in/gographics/imagick.v2 v2.6.3 h1:m1l5y3HMoYsXLRSDK3VQyK/xjPwClfH/0W7ZN73pTO4=
+gopkg.in/gographics/imagick.v2 v2.6.3/go.mod h1:/QVPLV/iKdNttRKthmDkeeGg+vdHurVEPc8zkU0XgBk=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.3/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
