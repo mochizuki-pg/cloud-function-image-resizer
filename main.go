@@ -2,6 +2,7 @@ package imageresizer
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -19,24 +20,37 @@ func init() {
 	functions.HTTP("ResizeImage", ResizeImage)
 }
 
+func errorResponse(w http.ResponseWriter, message string, errType string, code int) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	errorResponse := map[string]interface{}{
+		"error": map[string]interface{}{
+			"message": message,
+			"type":    errType,
+			"code":    code,
+		},
+	}
+	json.NewEncoder(w).Encode(errorResponse)
+}
+
 func ResizeImage(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 
 	originalImageBlob, format, err := fetchImageFromStorage(ctx, r)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Fetch error: %v", err), http.StatusInternalServerError)
+		errorResponse(w, fmt.Sprintf("Fetch error: %v", err), "FetchError", http.StatusInternalServerError)
 		return
 	}
 
 	resizedImageBlob, err := resizeImage(originalImageBlob, r)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Resize error: %v", err), http.StatusInternalServerError)
+		errorResponse(w, fmt.Sprintf("Resize error: %v", err), "ResizeError", http.StatusInternalServerError)
 		return
 	}
 
 	err = writeToResponse(w, resizedImageBlob, format)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Write error: %v", err), http.StatusInternalServerError)
+		errorResponse(w, fmt.Sprintf("Write error: %v", err), "WriteError", http.StatusInternalServerError)
 		return
 	}
 }
