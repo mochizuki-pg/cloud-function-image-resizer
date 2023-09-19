@@ -101,6 +101,10 @@ func resizeImage(originalImageBlob []byte, r *http.Request) ([]byte, error) {
 	width := uint(0)
 	height := uint(0)
 
+	if widthParam == "" && heightParam == "" {
+		return originalImageBlob, nil
+	}
+
 	if widthParam != "" {
 		intWidth, err := strconv.Atoi(widthParam)
 		if err != nil || intWidth <= 0 {
