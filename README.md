@@ -16,7 +16,7 @@ Replace `your-project-id` with the Google Cloud Project ID, `your-region` with t
 
 ## Usage
 
-#### With both width and height specified:
+### With both width and height specified:
 
 To request a resized image with both the width and height specified, you can add `w` and `h` query parameters to the URL:
 
@@ -26,7 +26,7 @@ https://REGION-PROJECT_ID.cloudfunctions.net/image-resizer?image_name=image.jpg&
 
 Replace `REGION` with your Google Cloud region (e.g., asia-northeast1) and `PROJECT_ID` with your Google Cloud project ID.
 
-#### With either width or height specified:
+### With either width or height specified:
 
 If you only specify either the width (`w`) or the height (`h`), the function will automatically calculate the other dimension while maintaining the original aspect ratio:
 
@@ -40,7 +40,7 @@ https://REGION-PROJECT_ID.cloudfunctions.net/image-resizer?image_name=image.jpg&
 
 Replace `REGION` with your Google Cloud region (e.g., asia-northeast1) and `PROJECT_ID` with your Google Cloud project ID.
 
-#### Error Handling
+### Error Handling
 
 In case of an error, the function will return a JSON response with the following structure:
 
