@@ -39,3 +39,23 @@ https://REGION-PROJECT_ID.cloudfunctions.net/image-resizer?image_name=image.jpg&
 ```
 
 Replace `REGION` with your Google Cloud region (e.g., asia-northeast1) and `PROJECT_ID` with your Google Cloud project ID.
+
+#### Error Handling
+
+In case of an error, the function will return a JSON response with the following structure:
+
+```json
+{
+  "error": {
+    "code": 500,
+    "message": "Fetch error: storage: object doesn't exist",
+    "type": "FetchError"
+  }
+}
+```
+
+- `code`: HTTP status code representing the error.
+- `message`: A descriptive error message.
+- `type`: Type of the error, useful for categorizing errors on the client side.
+
+For example, if the specified image does not exist in the Google Cloud Storage bucket, the function will return a `FetchError` with a 500 status code and a message indicating that the object doesn't exist.
