@@ -59,3 +59,14 @@ In case of an error, the function will return a JSON response with the following
 - `type`: Type of the error, useful for categorizing errors on the client side.
 
 For example, if the specified image does not exist in the Google Cloud Storage bucket, the function will return a `FetchError` with a 500 status code and a message indicating that the object doesn't exist.
+
+
+### Caching
+
+The Cloud Function has been designed to support caching by default. When an image is successfully resized and served, the HTTP response will include a `Cache-Control` header. This header indicates that the resource can be publicly cached and specifies the duration for which the resource is considered fresh.
+
+By default, the cache duration is set to 10 minutes (`max-age=600`). This means that once the image is fetched and resized, CDNs, browsers, or any intermediate cache servers can store and reuse the resized image for up to 10 minutes without re-fetching it from the Cloud Function.
+
+This caching behavior improves the performance and reduces the load on the Cloud Function, especially when the same resized image is frequently accessed. However, it's essential to be aware of this caching behavior if you are making frequent updates to your images or if you require real-time image processing without any delay.
+
+If you're deploying this function in an environment where caching is not desired or if a different cache duration is required, you can adjust or remove the `Cache-Control` header in the code.
