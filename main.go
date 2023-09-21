@@ -22,6 +22,7 @@ func init() {
 
 func errorResponse(w http.ResponseWriter, message string, errType string, code int) {
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "no-store")
 	w.WriteHeader(code)
 	errorResponse := map[string]interface{}{
 		"error": map[string]interface{}{
@@ -140,6 +141,7 @@ func resizeImage(originalImageBlob []byte, r *http.Request) ([]byte, error) {
 
 func writeToResponse(w http.ResponseWriter, resizedImageBlob []byte, originalFormat string) error {
 	w.Header().Set("Content-Type", originalFormat)
+	w.Header().Set("Cache-Control", "public, max-age=600")
 	_, err := w.Write(resizedImageBlob)
 	return err
 }
