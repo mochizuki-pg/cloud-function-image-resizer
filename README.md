@@ -9,7 +9,7 @@ This project provides a Google Cloud Function to resize images stored in Google 
 To deploy this function to Google Cloud, you can use the `gcloud` command-line tool. Below is the sample command to deploy the function:
 
 ```bash
-gcloud functions deploy image-resizer --entry-point ResizeImage --runtime go118 --trigger-http --allow-unauthenticated --project your-project-id --region your-region --set-env-vars GCS_BUCKET_NAME="your-bucket-name"
+gcloud functions deploy image-resizer --gen2 --entry-point ResizeImage --runtime go118 --trigger-http --allow-unauthenticated --project your-project-id --region your-region --set-env-vars GCS_BUCKET_NAME="your-bucket-name"
 ```
 
 Replace `your-project-id` with the Google Cloud Project ID, `your-region` with the Google Cloud region, and `your-bucket-name` with the name of the Google Cloud Storage bucket where your images are stored.
