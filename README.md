@@ -65,4 +65,4 @@ For example, if the specified image does not exist in the Google Cloud Storage b
 
 The Cloud Function has been designed to support caching by default. When an image is successfully resized and served, the HTTP response will include a `Cache-Control` header. This header indicates that the resource can be publicly cached and specifies the duration for which the resource is considered fresh.
 
-By default, the cache duration is set to 10 minutes (`max-age=600`). This means that once the image is fetched and resized, CDNs, browsers, or any intermediate cache servers can store and reuse the resized image for up to 10 minutes without re-fetching it from the Cloud Function.
+By default, the cache duration is set to 24 hours (`max-age=86400`). This means that once the image is fetched and resized, CDNs, browsers, or any intermediate cache servers can store and reuse the resized image for up to 10 minutes without re-fetching it from the Cloud Function.

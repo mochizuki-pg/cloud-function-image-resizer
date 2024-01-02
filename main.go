@@ -141,7 +141,7 @@ func resizeImage(originalImageBlob []byte, r *http.Request) ([]byte, error) {
 
 func writeToResponse(w http.ResponseWriter, resizedImageBlob []byte, originalFormat string) error {
 	w.Header().Set("Content-Type", originalFormat)
-	w.Header().Set("Cache-Control", "public, max-age=600")
+	w.Header().Set("Cache-Control", "public, max-age=86400")
 	_, err := w.Write(resizedImageBlob)
 	return err
 }
