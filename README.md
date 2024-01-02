@@ -66,3 +66,23 @@ For example, if the specified image does not exist in the Google Cloud Storage b
 The Cloud Function has been designed to support caching by default. When an image is successfully resized and served, the HTTP response will include a `Cache-Control` header. This header indicates that the resource can be publicly cached and specifies the duration for which the resource is considered fresh.
 
 By default, the cache duration is set to 24 hours (`max-age=86400`). This means that once the image is fetched and resized, CDNs, browsers, or any intermediate cache servers can store and reuse the resized image for up to 24 hours without re-fetching it from the Cloud Function.
+
+### Local Testing
+To test the image resizing functionality locally, you can run the local server using the go run command. This will start a local HTTP server, allowing you to test the resizing features without deploying to Google Cloud.
+
+Run the local server using the following command:
+
+```bash
+go run test/local_server.go
+```
+
+Once the server is running, you can test the image resizing by accessing the following URL endpoints with your web browser or HTTP client:
+
+Local Server Endpoints
+Resize with both width and height specified:
+
+```bash
+http://localhost:8080/resize?w=200&h=300
+```
+
+The server will resize the image located at "test/test_image.jpg" according to the specified w and h query parameters and return the resized image in the response.

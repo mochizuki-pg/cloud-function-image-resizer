@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"strconv"
@@ -70,18 +70,24 @@ func fetchImageFromStorage(ctx context.Context, r *http.Request) ([]byte, string
 
 	bucket := client.Bucket(bucketName)
 	object := bucket.Object(imageName)
+
+	attrs, err := object.Attrs(ctx)
+	if err != nil {
+		return nil, "", err
+	}
+
 	reader, err := object.NewReader(ctx)
 	if err != nil {
 		return nil, "", err
 	}
 	defer reader.Close()
 
-	buf, err := ioutil.ReadAll(reader)
+	buf, err := io.ReadAll(reader)
 	if err != nil {
 		return nil, "", err
 	}
 
-	return buf, reader.ContentType(), nil
+	return buf, attrs.ContentType, nil
 }
 
 func resizeImage(originalImageBlob []byte, r *http.Request) ([]byte, error) {
