@@ -15,8 +15,8 @@ func main() {
 	defer imagick.Terminate()
 
 	http.HandleFunc("/resize", resizeHandler)
-	fmt.Println("Server is running at http://localhost:9000")
-	http.ListenAndServe(":9000", nil)
+	fmt.Println("Server is running at http://localhost:8080")
+	http.ListenAndServe(":8080", nil)
 }
 
 func errorResponse(w http.ResponseWriter, message string, code int) {
