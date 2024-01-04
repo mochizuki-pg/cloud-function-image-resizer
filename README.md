@@ -84,5 +84,9 @@ Resize with both width and height specified:
 ```bash
 http://localhost:8080/resize?w=200&h=300
 ```
-
-The server will resize the image located at "test/test_image.jpg" according to the specified w and h query parameters and return the resized image in the response.
+<br> 
+<p align="center">
+  <img src="https://github.com/mochizuki-pg/cloud-function-image-resizer/assets/38402160/cd47aaf9-5847-4433-bc24-eb73cddb844c" width=400px>
+</p>
+<br>
+The server will resize the image located at `test/test_image.jpg` according to the specified w and h query parameters and return the resized image in the response.
